@@ -8,8 +8,8 @@ public class DBClass
     {
         string host = "localhost";
         int port = 3306;
-        string database = "time_tracker";
-        string username = "TimeTrackerUser";
+        string database = "dict_set";
+        string username = "DictSetUserDB";
         string password = "1234";
 
         return DBUtils.GetDBConnection(host, port, database, username, password);
