@@ -2,7 +2,7 @@
 
 using MySql.Data.MySqlClient;
 
-class DBUtils
+public class DBUtils
 {
     public static MySqlConnection
         GetDBConnection(string host, int port, string database, string username, string password)
@@ -22,6 +22,16 @@ class DBUtils
         connection.Open();
         MySqlCommand command = new MySqlCommand("SELECT COUNT(*) FROM users WHERE email = @email", connection);
         command.Parameters.AddWithValue("@email", email);
+        long count = (long)command.ExecuteScalar();
+        return count != 0;
+    }
+
+    public static bool CheckTokenExists(string token)
+    {
+        MySqlConnection connection = DBClass.GetDBConnection();
+        connection.Open();
+        MySqlCommand command = new MySqlCommand("SELECT COUNT(*) FROM tokens WHERE token = @token", connection);
+        command.Parameters.AddWithValue("@token", token);
         long count = (long)command.ExecuteScalar();
         return count != 0;
     }
