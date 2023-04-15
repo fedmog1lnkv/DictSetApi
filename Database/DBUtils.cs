@@ -35,4 +35,14 @@ public class DBUtils
         long count = (long)command.ExecuteScalar();
         return count != 0;
     }
+
+    public static bool CheckSetExists(int userId, string name)
+    {
+        MySqlConnection connection = DBClass.GetDBConnection();
+        connection.Open();
+        MySqlCommand command =
+            new MySqlCommand($"SELECT COUNT(*) FROM sets WHERE user_id = {userId} AND name = '{name}'", connection);
+        long count = (long)command.ExecuteScalar();
+        return count != 0;
+    }
 }

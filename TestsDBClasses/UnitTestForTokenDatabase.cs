@@ -4,7 +4,7 @@
 public class UnitTestAddToken
 {
     UsersDatabase userDB = new UsersDatabase();
-    string username = "fedm";
+    string? username = "fedm";
     string email = "fedm@yandex.ru";
     string password = "1234";
 
@@ -36,7 +36,7 @@ public class UnitTestAddToken
 public class UnitTestGetTokenByEmail
 {
     UsersDatabase userDB = new UsersDatabase();
-    string username = "fedm";
+    string? username = "fedm";
     string email = "fedm@yandex.ru";
     string password = "1234";
 
@@ -49,6 +49,29 @@ public class UnitTestGetTokenByEmail
         tokenDB.AddToken(email, "test_token");
         string actual = tokenDB.GetTokenByEmail(email);
         Assert.AreEqual("test_token", actual);
+        tokenDB.DeleteToken(email);
+        userDB.DeleteUser(email);
+    }
+}
+
+[TestClass]
+public class UnitTestGetEmailByToken
+{
+    UsersDatabase userDB = new UsersDatabase();
+    string? username = "fedm";
+    string email = "fedm@yandex.ru";
+    string password = "1234";
+
+    TokenDatabase tokenDB = new TokenDatabase();
+    
+
+    [TestMethod]
+    public void TestGetEmailByToken()
+    {
+        userDB.Register(username, email, password);
+        tokenDB.AddToken(email, "test_token");
+        string actual = tokenDB.GetEmailByToken("test_token");
+        Assert.AreEqual(email, actual);
         tokenDB.DeleteToken(email);
         userDB.DeleteUser(email);
     }

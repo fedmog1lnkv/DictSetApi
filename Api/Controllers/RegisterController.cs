@@ -28,19 +28,4 @@ public class RegisterController : ControllerBase
 
         return BadRequest();
     }
-    
-    /*[HttpPost]
-    public IActionResult Login(User model)
-    {
-        var user = _context.Users.SingleOrDefault(u => u.Login == model.Login);
-
-        if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.Password))
-        {
-            return Unauthorized();
-        }
-
-        var tokenString = GenerateToken(user);
-
-        return Ok(new { token = tokenString });
-    }*/
 }

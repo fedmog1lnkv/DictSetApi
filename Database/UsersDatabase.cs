@@ -5,7 +5,7 @@ namespace Database;
 public class UsersDatabase : DBClass
 {
     
-    public bool Register(string username, string email, string password)
+    public bool Register(string? username, string email, string password)
     {
         if (DBUtils.CheckUserEmailExists(email))
         {
@@ -61,7 +61,7 @@ public class UsersDatabase : DBClass
         return count == 1;
     }
 
-    public int GetUserId(string email)
+    public static int GetUserIdByEmail(string email)
     {
         string sql = $"SELECT user_id FROM users WHERE email = '{email}'";
 

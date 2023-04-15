@@ -4,7 +4,7 @@ namespace Database;
 public class UnitTestRegister
 {
     UsersDatabase db = new UsersDatabase();
-    string username = "fedm";
+    string? username = "fedm";
     string email = "fedm@yandex.ru";
     string password = "1234";
 
@@ -30,7 +30,7 @@ public class UnitTestRegister
 public class UnitTestDelete
 {
     UsersDatabase db = new UsersDatabase();
-    string username = "fedm";
+    string? username = "fedm";
     string email = "fedm@yandex.ru";
     string password = "1234";
 
@@ -55,7 +55,7 @@ public class UnitTestDelete
 public class UnitTestAuthorization
 {
     UsersDatabase db = new UsersDatabase();
-    string username = "fedm";
+    string? username = "fedm";
     string email = "fedm@yandex.ru";
     string password = "1234";
     
