@@ -57,7 +57,7 @@ public class SetDatabase : DBClass
         return resultingSet;
     }
 
-    public static string GetAllSets(int userId)
+    public static List<Set> GetAllSets(int userId)
     {
         string sql = $"SELECT * FROM sets WHERE user_id = {userId};";
 
@@ -66,20 +66,21 @@ public class SetDatabase : DBClass
         MySqlCommand cmd = connection.CreateCommand();
         cmd.CommandText = sql;
         MySqlDataReader reader = cmd.ExecuteReader();
+        
         List<Set> allSets = new List<Set>();
         while (reader.Read())
         {
-            Set resultingSet = new Set();
-            resultingSet.Id = Convert.ToInt32(reader["set_id"]);
-            resultingSet.UserId = Convert.ToInt32(reader["user_id"]);
-            resultingSet.Name = reader["name"].ToString()!;
-            resultingSet.Description = reader["description"].ToString()!;
-            allSets.Add(resultingSet);
+            Set tempSet = new Set();
+            tempSet.Id = Convert.ToInt32(reader["set_id"]);
+            tempSet.UserId = Convert.ToInt32(reader["user_id"]);
+            tempSet.Name = reader["name"].ToString()!;
+            tempSet.Description = reader["description"].ToString()!;
+            allSets.Add(tempSet);
         }
 
         connection.Close();
 
-        return JsonConvert.SerializeObject(allSets, Formatting.Indented);
+        return allSets;
     }
 
     public void DeleteSet(int userId, string name)

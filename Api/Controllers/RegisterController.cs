@@ -16,16 +16,16 @@ namespace Api.Controllers;
 public class RegisterController : ControllerBase
 {
     [HttpPost]
-    public IActionResult Register(User model)
+    public IActionResult Register(UserDto model)
     {
         if (ModelState.IsValid)
         {
             UsersDatabase UDB = new UsersDatabase();
             bool reg = UDB.Register(model.Username, model.Email, model.Password);
-            if (!reg) return Conflict("A user with this E-mail exists");
-            return Ok();
+            if (!reg) return Conflict(new Response(false, null, "A user with this E-mail exists"));
+            return Ok(new Response(true, new { message = "The user is registered" }, null));
         }
 
-        return BadRequest();
+        return BadRequest(new Response(false, null, "Bad JSON"));
     }
 }

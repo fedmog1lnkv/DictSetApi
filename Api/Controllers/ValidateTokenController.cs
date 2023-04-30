@@ -15,13 +15,13 @@ namespace Api.Controllers
     [ApiController]
     public class ValidateTokenController : ControllerBase
     {
-        // GET: api/ValidateToken/token/{token}
-        [HttpGet("token/{token}")]
+        // GET: api/ValidateToken/{token}
+        [HttpGet("{token}")]
         public IActionResult Get(string token)
         {
             TokenClass tokenCL = new TokenClass();
-            if (tokenCL.ValidateToken(token)) return Accepted();
-            else return Unauthorized();
+            if (tokenCL.ValidateToken(token)) return Accepted(new Response(true, null, null));
+            else return Unauthorized(new Response(false, null, "The user is not logged in"));
         }
     }
 }

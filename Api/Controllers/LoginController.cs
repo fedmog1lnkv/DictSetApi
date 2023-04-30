@@ -17,18 +17,19 @@ namespace Api.Controllers
     {
         // POST: api/Login
         [HttpPost]
-        public IActionResult Get(User model)
+        public IActionResult Get(UserDto model)
         {
             if (ModelState.IsValid)
             {
                 Console.WriteLine($"Авторизация {model.Email}, {model.Password}");
                 UsersDatabase UDB = new UsersDatabase();
-                if (!UDB.Authorization(model.Email, model.Password)) return Unauthorized();
+                if (!UDB.Authorization(model.Email, model.Password))
+                    return Unauthorized(new Response(false, null, "The user is not logged in"));
 
                 // deleting a token with a new login 
                 TokenDatabase TDB = new TokenDatabase();
                 TDB.DeleteToken(model.Email);
-                
+
                 // generate new token
                 TokenClass tokenCL = new TokenClass();
                 // data for generate token
@@ -38,14 +39,15 @@ namespace Api.Controllers
                     token = tokenCL.GenerateToken();
                 }
 
-                string responseJSON = "{\n" + $"""
-                "message": "User authorized", 
-                "token": "{token}"
-               """ + "\n}";
-                return Ok(responseJSON);
+                var resp = new
+                {
+                    message = "User authorized",
+                    token = token
+                };
+                return Ok(new Response(true, resp, null));
             }
 
-            return Unauthorized();
+            return Unauthorized(new Response(false, null, "The user is not logged in"));
         }
     }
 }
