@@ -34,6 +34,7 @@ CREATE TABLE `words` (
 	`set_id` INT,
 	`word` VARCHAR(100),
 	`translate` VARCHAR(100),
+	`description` TEXT DEFAULT NULL,
 	PRIMARY KEY (`word_id`),
   FOREIGN KEY (set_id) REFERENCES sets (set_id)
 );

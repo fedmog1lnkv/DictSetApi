@@ -8,13 +8,22 @@ public class Words
     public int SetId { get; set; }
     public string Word { get; set; }
     public string Translate { get; set; }
+    public string Description { get; set; }
 }
 
 public class WordsDatabase : DBClass
 {
-    public void AddWord(int setId, string word, string translate)
+    public void AddWord(int setId, string word, string translate, string? description = null)
     {
-        string sql = $"INSERT INTO words (set_id, word, translate) values ({setId}, '{word}', '{translate}');";
+        string sql;
+        if (description != null)
+        {
+            sql = $"INSERT INTO words (set_id, word, translate) values ({setId}, '{word}', '{translate}');";
+        }
+        else
+        {
+            sql = $"INSERT INTO words (set_id, word, translate, description) values ({setId}, '{word}', '{translate}', '{description}');";
+        }
 
         MySqlConnection connection = GetDBConnection();
         connection.Open();
@@ -23,7 +32,7 @@ public class WordsDatabase : DBClass
         cmd.ExecuteNonQuery();
         connection.Close();
     }
-    
+
     public void DeleteWord(int setId, string word)
     {
         string sql = $"DELETE FROM words WHERE set_id = {setId} AND word = '{word}'";
@@ -35,7 +44,7 @@ public class WordsDatabase : DBClass
         cmd.ExecuteNonQuery();
         connection.Close();
     }
-    
+
     public static List<Words> GetSetWords(int setId)
     {
         string sql = $"SELECT * FROM words WHERE set_id = {setId};";
@@ -55,10 +64,27 @@ public class WordsDatabase : DBClass
             tempWord.SetId = Convert.ToInt32(reader["set_id"]);
             tempWord.Word = reader["word"].ToString() ?? string.Empty;
             tempWord.Translate = reader["translate"].ToString() ?? string.Empty;
+            tempWord.Description = reader["description"].ToString() ?? string.Empty;
             result.Add(tempWord);
         }
+
         connection.Close();
 
         return result;
+    }
+
+    public static int GetCountSetWords(int setId)
+    {
+        string sql = $"SELECT COUNT(*) FROM words WHERE set_id = {setId};";
+
+        MySqlConnection connection = GetDBConnection();
+        connection.Open();
+        MySqlCommand cmd = connection.CreateCommand();
+        cmd.CommandText = sql;
+        int countWords = (int)cmd.ExecuteScalar();
+
+        connection.Close();
+
+        return countWords;
     }
 }
