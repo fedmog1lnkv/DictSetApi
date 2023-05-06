@@ -78,6 +78,7 @@ public class SetDatabase : DBClass
             tempSet.UserId = Convert.ToInt32(reader["user_id"]);
             tempSet.Name = reader["name"].ToString()!;
             tempSet.Description = reader["description"].ToString()!;
+            tempSet.CountWords = WordsDatabase.GetCountSetWords(tempSet.Id);
             allSets.Add(tempSet);
         }
 

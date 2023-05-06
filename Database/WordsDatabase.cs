@@ -81,7 +81,7 @@ public class WordsDatabase : DBClass
         connection.Open();
         MySqlCommand cmd = connection.CreateCommand();
         cmd.CommandText = sql;
-        int countWords = (int)cmd.ExecuteScalar();
+        int countWords = Convert.ToInt32(cmd.ExecuteScalar());
 
         connection.Close();
 
