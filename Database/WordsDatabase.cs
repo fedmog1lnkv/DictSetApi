@@ -13,16 +13,16 @@ public class Words
 
 public class WordsDatabase : DBClass
 {
-    public void AddWord(int setId, string word, string translate, string? description = null)
+    public void AddWord(int setId, string word, string translate, string? description)
     {
         string sql;
-        if (description != null)
+        if (description == null)
         {
             sql = $"INSERT INTO words (set_id, word, translate) values ({setId}, '{word}', '{translate}');";
         }
         else
         {
-            sql = $"INSERT INTO words (set_id, word, translate, description) values ({setId}, '{word}', '{translate}', '{description}');";
+            sql = $"INSERT INTO words (set_id, word, translate, description) values ({setId}, '{word}', '{translate}', '{description.Replace("'", "\"")}');";
         }
 
         MySqlConnection connection = GetDBConnection();
