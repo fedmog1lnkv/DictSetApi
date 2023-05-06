@@ -15,7 +15,7 @@ public class Set
 public class SetDatabase : DBClass
 {
     // TODO : обновить имя сета, обновить описание сета
-    public bool AddSet(int userId, string name, string description)
+    public bool AddSet(int userId, string? name, string description)
     {
         if (DBUtils.CheckSetExists(userId, name))
         {
@@ -87,9 +87,9 @@ public class SetDatabase : DBClass
         return allSets;
     }
 
-    public void DeleteSet(int userId, string name)
+    public void DeleteSet(int userId, int? setId)
     {
-        string sql = $"DELETE FROM sets WHERE user_id = {userId} AND name = '{name}'";
+        string sql = $"DELETE FROM words WHERE set_id = {setId}; DELETE FROM sets WHERE user_id = {userId} AND set_id = {setId};";
 
         MySqlConnection connection = GetDBConnection();
         connection.Open();

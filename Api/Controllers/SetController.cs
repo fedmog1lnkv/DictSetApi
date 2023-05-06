@@ -111,7 +111,6 @@ namespace Api.Controllers
         }
 
         // DELETE: api/Set
-        // TODO : сделать удаление по id
         [Route("delete")]
         [HttpDelete]
         public IActionResult DeleteSet(SetDto model)
@@ -122,12 +121,17 @@ namespace Api.Controllers
                 return Unauthorized(new Response(false, null, "The user is not logged in"));
             }
 
+            if (model.SetId == null)
+            {
+                return BadRequest(new Response(false, null, "To delete a set, a setId is required"));
+            }
+
             TokenDatabase TDB = new TokenDatabase();
             string email = TDB.GetEmailByToken(model.AccessToken);
             int userId = UsersDatabase.GetUserIdByEmail(email);
 
             SetDatabase SDB = new SetDatabase();
-            SDB.DeleteSet(userId, model.Name);
+            SDB.DeleteSet(userId, model.SetId);
 
             return Ok(new Response(true, new { message = "Set deleted" }, null));
         }
