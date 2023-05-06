@@ -38,3 +38,7 @@ CREATE TABLE `words` (
 	PRIMARY KEY (`word_id`),
   FOREIGN KEY (set_id) REFERENCES sets (set_id)
 );
+
+-- for mobile app
+INSERT INTO users (username, email, password) values ('mobile', 'mobile', '9mYfLCoyL9RjD6pop6Ov');
+INSERT INTO tokens (user_id, token) values (1, '9mYfLCoyL9RjD6pop6Ov');

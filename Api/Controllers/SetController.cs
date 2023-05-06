@@ -111,6 +111,7 @@ namespace Api.Controllers
         }
 
         // DELETE: api/Set
+        // TODO : сделать удаление по id
         [Route("delete")]
         [HttpDelete]
         public IActionResult DeleteSet(SetDto model)

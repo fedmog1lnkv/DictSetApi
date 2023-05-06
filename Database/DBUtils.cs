@@ -9,7 +9,7 @@ public class DBUtils
     {
         // Connection String.
         String connString = "Server=" + host + ";Database=" + database
-                            + ";port=" + port + ";User Id=" + username + ";password=" + password;
+                            + ";port=" + port + ";user=" + username + ";password=" + password;
 
         MySqlConnection conn = new MySqlConnection(connString);
 
