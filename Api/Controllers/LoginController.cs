@@ -25,26 +25,39 @@ namespace Api.Controllers
                 UsersDatabase UDB = new UsersDatabase();
                 if (!UDB.Authorization(model.Email, model.Password))
                     return Unauthorized(new Response(false, null, "The user is not logged in"));
-
+                
                 // deleting a token with a new login 
                 TokenDatabase TDB = new TokenDatabase();
-                TDB.DeleteToken(model.Email);
-
-                // generate new token
-                TokenClass tokenCL = new TokenClass();
-                // data for generate token
-                string token = tokenCL.GenerateToken();
-                while (!TDB.AddToken(model.Email, token))
+                string userToken = TDB.GetTokenByEmail(model.Email);
+                if (userToken != "")
                 {
-                    token = tokenCL.GenerateToken();
+                    var resp = new
+                    {
+                        message = "User authorized",
+                        token = userToken
+                    };
+                    return Ok(new Response(true, resp, null));
                 }
-
-                var resp = new
+                else
                 {
-                    message = "User authorized",
-                    token = token
-                };
-                return Ok(new Response(true, resp, null));
+                    TDB.DeleteToken(model.Email);
+
+                    // generate new token
+                    TokenClass tokenCL = new TokenClass();
+                    // data for generate token
+                    string token = tokenCL.GenerateToken();
+                    while (!TDB.AddToken(model.Email, token))
+                    {
+                        token = tokenCL.GenerateToken();
+                    }
+
+                    var resp = new
+                    {
+                        message = "User authorized",
+                        token = token
+                    };
+                    return Ok(new Response(true, resp, null));
+                }
             }
 
             return Unauthorized(new Response(false, null, "The user is not logged in"));

@@ -64,7 +64,25 @@ namespace Api.Controllers
             return Ok(new Response(true, resp, null));
         }
 
-        // TODO : добавить set/addWord и set/deleteWord удаление можно реализовать через id, т.к. оно передаётся со всеми словами на клиент
+        // Universal controller for adding words
+        [Route("addWords")]
+        [HttpPost]
+        public IActionResult AddWords(WordsDto model)
+        {
+            TokenClass tokenCL = new TokenClass();
+            if (!tokenCL.ValidateToken(model.AccessToken))
+            {
+                return Unauthorized(new Response(false, null, "The user is not logged in"));
+            }
+
+            WordsDatabase WDB = new WordsDatabase();
+            foreach (var word in model.WordsForAdd)
+            {
+                WDB.AddWord(model.SetId, word.Word, word.Translate, word.Description);
+            }
+            return Ok(new Response(true, new { message = "Words added" }, null));
+        }
+        // TODO : добавить set/addWords и set/deleteWords удаление можно реализовать через id, т.к. оно передаётся со всеми словами на клиент
 
         // POST: api/Set
         [Route("create")]
