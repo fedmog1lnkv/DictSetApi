@@ -7,6 +7,13 @@ public class WordsDto
     public List<Words> WordsForAdd { get; set; }
 }
 
+public class WordsDtoDelete
+{
+    public string AccessToken { get; set; }
+    public int SetId { get; set; }
+    public List<int> IdWordsForDelete { get; set; }
+}
+
 public class Words
 {
     public string Word { get; set; }

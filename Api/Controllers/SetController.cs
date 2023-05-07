@@ -74,15 +74,53 @@ namespace Api.Controllers
             {
                 return Unauthorized(new Response(false, null, "The user is not logged in"));
             }
+            
+            TokenDatabase TDB = new TokenDatabase();
+            string email = TDB.GetEmailByToken(model.AccessToken);
+            int userId = UsersDatabase.GetUserIdByEmail(email);
+
+            if (!DBUtils.CheckSetExistsId(userId, model.SetId))
+            {
+                return BadRequest(new Response(false, null, "The user don't have set with this id"));
+            }
 
             WordsDatabase WDB = new WordsDatabase();
             foreach (var word in model.WordsForAdd)
             {
                 WDB.AddWord(model.SetId, word.Word, word.Translate, word.Description);
             }
+
             return Ok(new Response(true, new { message = "Words added" }, null));
         }
-        // TODO : добавить set/addWords и set/deleteWords удаление можно реализовать через id, т.к. оно передаётся со всеми словами на клиент
+
+        [Route("deleteWords")]
+        [HttpDelete]
+        public IActionResult DeleteWords(WordsDtoDelete model)
+        {
+            TokenClass tokenCL = new TokenClass();
+            if (!tokenCL.ValidateToken(model.AccessToken))
+            {
+                return Unauthorized(new Response(false, null, "The user is not logged in"));
+            }
+            
+            TokenDatabase TDB = new TokenDatabase();
+            string email = TDB.GetEmailByToken(model.AccessToken);
+            int userId = UsersDatabase.GetUserIdByEmail(email);
+
+            if (!DBUtils.CheckSetExistsId(userId, model.SetId))
+            {
+                return BadRequest(new Response(false, null, "The user don't have set with this id"));
+            }
+
+            WordsDatabase WDB = new WordsDatabase();
+            foreach (var IdWord in model.IdWordsForDelete)
+            {
+                Console.WriteLine(IdWord);
+                WDB.DeleteWord(model.SetId, IdWord);
+            }
+
+            return Ok(new Response(true, new { message = "Words Deleted" }, null));
+        }
 
         // POST: api/Set
         [Route("create")]

@@ -45,4 +45,14 @@ public class DBUtils
         long count = (long)command.ExecuteScalar();
         return count != 0;
     }
+    
+    public static bool CheckSetExistsId(int userId, int setId)
+    {
+        MySqlConnection connection = DBClass.GetDBConnection();
+        connection.Open();
+        MySqlCommand command =
+            new MySqlCommand($"SELECT COUNT(*) FROM sets WHERE user_id = {userId} AND set_id = '{setId}'", connection);
+        long count = (long)command.ExecuteScalar();
+        return count != 0;
+    }
 }

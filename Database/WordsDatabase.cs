@@ -33,9 +33,9 @@ public class WordsDatabase : DBClass
         connection.Close();
     }
 
-    public void DeleteWord(int setId, string word)
+    public void DeleteWord(int setId, int wordId)
     {
-        string sql = $"DELETE FROM words WHERE set_id = {setId} AND word = '{word}'";
+        string sql = $"DELETE FROM words WHERE set_id = {setId} AND word_id = '{wordId}'";
 
         MySqlConnection connection = GetDBConnection();
         connection.Open();
@@ -73,7 +73,7 @@ public class WordsDatabase : DBClass
         return result;
     }
 
-    public static int GetCountSetWords(int setId)
+    public static int GetCountSetWords(int? setId)
     {
         string sql = $"SELECT COUNT(*) FROM words WHERE set_id = {setId};";
 

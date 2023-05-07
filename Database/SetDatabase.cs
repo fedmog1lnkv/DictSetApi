@@ -5,7 +5,7 @@ namespace Database;
 
 public class Set
 {
-    public int Id { get; set; }
+    public int? Id { get; set; }
     public int UserId { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
@@ -89,7 +89,8 @@ public class SetDatabase : DBClass
 
     public void DeleteSet(int userId, int? setId)
     {
-        string sql = $"DELETE FROM words WHERE set_id = {setId}; DELETE FROM sets WHERE user_id = {userId} AND set_id = {setId};";
+        string sql =
+            $"DELETE FROM words WHERE set_id = {setId}; DELETE FROM sets WHERE user_id = {userId} AND set_id = {setId};";
 
         MySqlConnection connection = GetDBConnection();
         connection.Open();
