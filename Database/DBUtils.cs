@@ -23,6 +23,7 @@ public class DBUtils
         MySqlCommand command = new MySqlCommand("SELECT COUNT(*) FROM users WHERE email = @email", connection);
         command.Parameters.AddWithValue("@email", email);
         long count = (long)command.ExecuteScalar();
+        connection.Close();
         return count != 0;
     }
 
@@ -33,6 +34,7 @@ public class DBUtils
         MySqlCommand command = new MySqlCommand("SELECT COUNT(*) FROM tokens WHERE token = @token", connection);
         command.Parameters.AddWithValue("@token", token);
         long count = (long)command.ExecuteScalar();
+        connection.Close();
         return count != 0;
     }
 
@@ -43,6 +45,7 @@ public class DBUtils
         MySqlCommand command =
             new MySqlCommand($"SELECT COUNT(*) FROM sets WHERE user_id = {userId} AND name = '{name}'", connection);
         long count = (long)command.ExecuteScalar();
+        connection.Close();
         return count != 0;
     }
     
@@ -53,6 +56,7 @@ public class DBUtils
         MySqlCommand command =
             new MySqlCommand($"SELECT COUNT(*) FROM sets WHERE user_id = {userId} AND set_id = '{setId}'", connection);
         long count = (long)command.ExecuteScalar();
+        connection.Close();
         return count != 0;
     }
 }

@@ -57,7 +57,8 @@ public class UsersDatabase : DBClass
         cmd.CommandText = sql;
         long count = (long)cmd.ExecuteScalar();
         Console.WriteLine(count);
-        
+        connection.Close();
+
         return count == 1;
     }
 
